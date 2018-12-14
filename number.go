@@ -58,7 +58,7 @@ func numMinMaxHandler(value reflect.Value, params []string, op byte) bool {
             return false
         }
     case 'g':
-        if val < pa1 {
+        if val > pa1 {
             return false
         }
     case 'r':
