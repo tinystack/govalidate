@@ -13,6 +13,7 @@ func init() {
     validateHandlerMap[VALID_STR_MIN] = strMinHandler
     validateHandlerMap[VALID_STR_MAX] = strMaxHandler
     validateHandlerMap[VALID_STR_LEN] = strEqLenHandler
+    validateHandlerMap[VALID_STR_RANGE] = strRangeHandler
 }
 
 func strMinHandler(value reflect.Value, params []string) bool {
@@ -27,13 +28,25 @@ func strEqLenHandler(value reflect.Value, params []string) bool {
     return strMinMaxHandler(value, params, 'e')
 }
 
+func strRangeHandler(value reflect.Value, params []string) bool {
+    return strMinMaxHandler(value, params, 'r')
+}
+
 func strMinMaxHandler(value reflect.Value, params []string, op byte) bool {
-    if len(params) != 1 {
-        return true
+    var smin, smax, slen int
+    if len(params) == 1 {
+        slen, _ = strconv.Atoi(params[0])
     }
-    slen, _ := strconv.Atoi(params[0])
+    if len(params) == 2 {
+        smin, _ = strconv.Atoi(params[0])
+        smax, _ = strconv.Atoi(params[1])
+    }
     if value.Kind() == reflect.String {
-        l := len(value.String())
+        s := value.String()
+        l := len(s)
+        if l == 0 {
+            return true
+        }
         switch op {
         case 'l':
             if l < slen {
@@ -45,6 +58,10 @@ func strMinMaxHandler(value reflect.Value, params []string, op byte) bool {
             }
         case 'g':
             if l > slen {
+                return false
+            }
+        case 'r':
+            if l < smin || l > smax {
                 return false
             }
         }

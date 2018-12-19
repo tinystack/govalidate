@@ -17,6 +17,9 @@ const (
     VALID_STR_MIN = "str_min"
     VALID_STR_MAX = "str_max"
     VALID_STR_LEN = "str_len"
+    VALID_STR_RANGE = "str_range"
+    VALID_EMAIL = "email"
+    VALID_MOBILE = "mobile"
 )
 
 var validateHandlerMap = make(map[string]validateHandler)
