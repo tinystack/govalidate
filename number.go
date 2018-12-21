@@ -52,10 +52,6 @@ func numMinMaxHandler(value reflect.Value, params []string, op byte) bool {
         val = float64(value.Float())
     }
 
-    if val == 0 {
-        return true
-    }
-
     switch op {
     case 'l':
         if val < pa1 {
